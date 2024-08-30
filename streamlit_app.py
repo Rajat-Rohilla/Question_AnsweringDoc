@@ -3,9 +3,9 @@ from openai import OpenAI
 import streamlit as st
 
 # Show title and description.
-st.title("📄 My Document question answering")
+st.title("📄 ChatBotHCAI")
 st.write(
-    "Upload a document below and ask a question about it – GPT will answer! "
+    "Upload the any give file – Answer on tips powered by Chatgpt 4.0 mini"
     "To use this app, you need to provide an OpenAI API key, which you can get [here](https://platform.openai.com/account/api-keys). "
 )
 
@@ -24,8 +24,22 @@ if openai_api_key:
             st.success("API Key is valid!")
             # Proceed with the rest of the app logic
             uploaded_file = st.file_uploader(
-                "Upload a document (.txt or .md)", type=("txt", "md")
-            )
+                "Upload a document (File)", type=(".txt",  # Plain Text File
+    ".md",   # Markdown Documentation File
+    ".rtf",  # Rich Text Format
+    ".doc",  # Microsoft Word Document
+    ".docx", # Microsoft Word Document (newer format)
+    ".pdf",  # Portable Document Format
+    ".xls",  # Microsoft Excel Spreadsheet
+    ".xlsx", # Microsoft Excel Spreadsheet (newer format)
+    ".csv",  # Comma-Separated Values
+    ".ods",  # OpenDocument Spreadsheet
+    ".sql",  # Structured Query Language Data File
+    ".db",   # SQLite Database File
+    ".sqlite", # SQLite Database File (alternative extension)
+    ".mdb",  # Microsoft Access Database
+    ".accdb", # Microsoft Access Database (newer format))
+            ))
             
             question = st.text_area(
                 "Now ask a question about the document!",
@@ -43,7 +57,7 @@ if openai_api_key:
                 ]
                 
                 stream = client.chat.completions.create(
-                    model="gpt-3.5-turbo",
+                    model="gpt-4o-mini",
                     messages=messages,
                     stream=True,
                 )
