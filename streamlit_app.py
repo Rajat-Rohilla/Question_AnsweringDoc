@@ -6,8 +6,8 @@ import streamlit as st
 # Show title and description.
 st.title("📄Document Questing")
 st.write(
-    "Upload the any give file – Answer on tips powered by Chatgpt 4.0 mini"
-    "To use this app, you need to provide an OpenAI API key, which you can get [here](https://platform.openai.com/account/api-keys). "
+    "Upload the any give file – Answer on tips powered by Chatgpt 4.0 mini", 
+    "If you don't have any API Key, create one [here](https://platform.openai.com/account/api-keys).)"
 )
 
 # Ask user for their OpenAI API key via st.text_input.
