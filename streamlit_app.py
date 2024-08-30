@@ -13,7 +13,6 @@ st.write(
 openai_api_key = st.text_input("OpenAI API Key", type="password")
 
 if openai_api_key:
-    try:
         # Create an OpenAI client to validate the API key
         client = OpenAI(api_key=openai_api_key)
         
@@ -51,9 +50,5 @@ if openai_api_key:
                 st.write_stream(stream)
         else:
             st.error("Failed to validate the API Key.")
-    except openai.error.AuthenticationError:
-        st.error("Invalid API Key. Please check your key and try again.")
-    except Exception as e:
-        st.error(f"An error occurred: {e}")
 else:
     st.info("Please add your OpenAI API key to continue.", icon="🗝️")
