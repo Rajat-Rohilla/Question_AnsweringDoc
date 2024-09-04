@@ -66,7 +66,7 @@ if openai_api_key:
                 st.write_stream(stream)
         else:
             st.error("Failed to validate the API Key.")
-    except openai.error.AuthenticationError:
+    except openai.OpenAIError:
         st.error("Invalid API Key. Please check your key and try again.")
     except Exception as e:
         st.error(f"An error occurred: {e}")
