@@ -1,12 +1,13 @@
+# Chatgpt 4.0 mini powered document Answesering 
 import openai
-from openai.error import AuthenticationError
+from openai import OpenAI
 import streamlit as st
 
 # Show title and description.
-st.title("📄Document Questioning")
+st.title("📄Document Questing")
 st.write(
-    "Upload any file – Get answers instantly powered by ChatGPT 4.0 mini.",
-    "If you don't have an API Key, create one [here](https://platform.openai.com/account/api-keys)."
+    "Upload the any give file – Answer on tips powered by Chatgpt 4.0 mini", 
+    "If you don't have any API Key, create one [here](https://platform.openai.com/account/api-keys).)"
 )
 
 # Ask user for their OpenAI API key via st.text_input.
@@ -14,21 +15,32 @@ openai_api_key = st.text_input("OpenAI API Key", type="password")
 
 if openai_api_key:
     try:
-        # Set the OpenAI API key
-        openai.api_key = openai_api_key
+        # Create an OpenAI client to validate the API key
+        client = OpenAI(api_key=openai_api_key)
         
         # Make a test request to check if the API key is valid
-        response = openai.Model.list()
-
+        response = client.models.list()
+        
         if response:
             st.success("API Key is valid!")
             # Proceed with the rest of the app logic
             uploaded_file = st.file_uploader(
-                "Upload a document (File)", 
-                type=(".txt", ".md", ".rtf", ".doc", ".docx", ".pdf", ".xls", 
-                      ".xlsx", ".csv", ".ods", ".sql", ".db", ".sqlite", 
-                      ".mdb", ".accdb")
-            )
+                "Upload a document (File)", type=(".txt",  # Plain Text File
+    ".md",   # Markdown Documentation File
+    ".rtf",  # Rich Text Format
+    ".doc",  # Microsoft Word Document
+    ".docx", # Microsoft Word Document (newer format)
+    ".pdf",  # Portable Document Format
+    ".xls",  # Microsoft Excel Spreadsheet
+    ".xlsx", # Microsoft Excel Spreadsheet (newer format)
+    ".csv",  # Comma-Separated Values
+    ".ods",  # OpenDocument Spreadsheet
+    ".sql",  # Structured Query Language Data File
+    ".db",   # SQLite Database File
+    ".sqlite", # SQLite Database File (alternative extension)
+    ".mdb",  # Microsoft Access Database
+    ".accdb", # Microsoft Access Database (newer format))
+            ))
             
             question = st.text_area(
                 "Now ask a question about the document!",
@@ -37,7 +49,7 @@ if openai_api_key:
             )
             
             if uploaded_file and question:
-                document = uploaded_file.read().decode('utf-8')
+                document = uploaded_file.read().decode()
                 messages = [
                     {
                         "role": "user",
@@ -45,17 +57,16 @@ if openai_api_key:
                     }
                 ]
                 
-                response = openai.ChatCompletion.create(
+                stream = client.chat.completions.create(
                     model="gpt-4o-mini",
                     messages=messages,
                     stream=True,
                 )
                 
-                for message in response:
-                    st.write(message['choices'][0]['delta'].get('content', ''))
+                st.write_stream(stream)
         else:
             st.error("Failed to validate the API Key.")
-    except AuthenticationError:
+    except openai.error.AuthenticationError:
         st.error("Invalid API Key. Please check your key and try again.")
     except Exception as e:
         st.error(f"An error occurred: {e}")
