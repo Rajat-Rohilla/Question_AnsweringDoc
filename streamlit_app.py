@@ -1,7 +1,13 @@
 import streamlit as st
 
-Lab1_page = st.Page("LAB1.py", title="First lab")
-Lab2_page = st.Page("LAB2.py", title="Second lab",default=True)
+# Sidebar for navigation
+st.sidebar.title("Navigation")
+page = st.sidebar.radio("Go to", ["Lab1", "Lab2"], index=1)  # Setting 'Lab2' as default with index=1
 
-pg = st.navigation([Lab1_page,Lab2_page])
-pg.run()
+# Logic to display the appropriate page
+if page == "Lab1":
+    st.title("Welcome to Lab 1")
+    st.write("This is the content for Lab 1.")
+elif page == "Lab2":
+    st.title("Welcome to Lab 2")
+    st.write("This is the default page (Lab 2).")
