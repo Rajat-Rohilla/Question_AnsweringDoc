@@ -10,17 +10,18 @@ st.write(
 )
 
 # Ask user for their OpenAI API key via st.text_input.
-openai_api_key = st.secrets['API_KEY']
-
+openai_api_key = st.secrets["API_Key"]
 
 if openai_api_key:
     try:
+        # Create an OpenAI client to validate the API key
+        client = OpenAI(api_key=openai_api_key)
+        
         # Make a test request to check if the API key is valid
-        response = openai.models.list()
+        response = client.models.list()
         
         if response:
             st.success("API Key is valid!")
-
             # Proceed with the rest of the app logic
             uploaded_file = st.file_uploader(
                 "Upload a document (File)", type=(".txt",  # Plain Text File
