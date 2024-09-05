@@ -71,3 +71,4 @@ if openai_api_key:
         st.error(f"An error occurred: {e}")
 else:
     st.info("Please add your OpenAI API key to continue.", icon="🗝️")
+
