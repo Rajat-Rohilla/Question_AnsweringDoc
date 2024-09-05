@@ -9,8 +9,11 @@ st.write(
     "If you don't have any API Key, create one [here](https://platform.openai.com/account/api-keys).)"
 )
 
-# Ask user for their OpenAI API key via st.text_input.
-openai_api_key = st.secrets["API_KEY"]
+# Access the OpenAI API key from the secrets.toml file
+openai_api_key = st.secrets["API_KEY"]["openai"]
+
+# You can then use this API key in your application
+st.write("API Key retrieved securely!")
 
 if openai_api_key:
     try:
