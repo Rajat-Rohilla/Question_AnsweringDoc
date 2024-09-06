@@ -1,29 +1,31 @@
+# Chatgpt 4.0 mini powered document Answesering 
 import openai
 import os
+from openai import OpenAI
 import streamlit as st
-
 # Show title and description.
 st.title("📄 LAB2")
 st.write(
-    "Upload any document – Get answers powered by ChatGPT 4.0 mini", 
-    "If you don't have an API Key, create one [here](https://platform.openai.com/account/api-keys)."
+    "Upload the any give file – Answer on tips powered by Chatgpt 4.0 mini", 
+    "If you don't have any API Key, create one [here](https://platform.openai.com/account/api-keys).)"
 )
 
 # Ask user for their OpenAI API key via st.text_input.
 openai_api_key = os.getenv("API_KEY")
+openai.api_key = openai_api_key
 
 if openai_api_key:
     try:
         # Create an OpenAI client to validate the API key
-        client = openai
+        client = OpenAI(api_key=openai_api_key)
         
         # Make a test request to check if the API key is valid
-        response = client.Model.list()
+        response = client.models.list()
         
         if response:
             st.success("API Key is valid!")
+
             
-            # Sidebar options
             st.sidebar.header("Summary Options")
             summary_option = st.sidebar.radio(
                 "Choose summary format:",
@@ -36,16 +38,26 @@ if openai_api_key:
             
             use_advanced_model = st.sidebar.checkbox("Use Advanced Model (GPT-4)")
 
-            model = "gpt-4" if use_advanced_model else "gpt-4-mini"
+            model = "gpt-4" if use_advanced_model else "gpt-4o-mini"
 
-            # File uploader and question input
+            # Proceed with the rest of the app logic
             uploaded_file = st.file_uploader(
-                "Upload a document (File)", type=(
-                    ".txt", ".md", ".rtf", ".doc", ".docx", ".pdf",
-                    ".xls", ".xlsx", ".csv", ".ods", ".sql", ".db",
-                    ".sqlite", ".mdb", ".accdb"
-                )
-            )
+                "Upload a document (File)", type=(".txt",  # Plain Text File
+    ".md",   # Markdown Documentation File
+    ".rtf",  # Rich Text Format
+    ".doc",  # Microsoft Word Document
+    ".docx", # Microsoft Word Document (newer format)
+    ".pdf",  # Portable Document Format
+    ".xls",  # Microsoft Excel Spreadsheet
+    ".xlsx", # Microsoft Excel Spreadsheet (newer format)
+    ".csv",  # Comma-Separated Values
+    ".ods",  # OpenDocument Spreadsheet
+    ".sql",  # Structured Query Language Data File
+    ".db",   # SQLite Database File
+    ".sqlite", # SQLite Database File (alternative extension)
+    ".mdb",  # Microsoft Access Database
+    ".accdb", # Microsoft Access Database (newer format))
+            ))
             
             if uploaded_file:
                 document = uploaded_file.read().decode(errors='ignore')
@@ -58,7 +70,6 @@ if openai_api_key:
                 else:
                     instructions = "Please summarize the following document in 5 bullet points."
 
-                # Prepare messages for the OpenAI API
                 messages = [
                     {
                         "role": "user",
@@ -66,13 +77,13 @@ if openai_api_key:
                     }
                 ]
                 
-                # Generate summary using OpenAI API
-                response = client.ChatCompletion.create(
+                 # Generate summary using OpenAI API
+                response = client.chat.completions.create(
                     model=model,
                     messages=messages
                 )
                 
-                summary = response['choices'][0]['message']['content']
+                summary = response.choices[0].message.content
                 st.write(summary)
                 
         else:
