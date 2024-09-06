@@ -48,9 +48,19 @@ if openai_api_key:
                 placeholder="Can you give me a short summary?",
                 disabled=not uploaded_file,
             )
+            # Function to format the OpenAI prompt based on summary selection
+            def format_summary_prompt(document, question, summary_option):
+              if summary_option == "Summarize in 100 words":
+               return f"Summarize the following document in 100 words:\n\n{document}\n\nQuestion: {question}"
+              elif summary_option == "Summarize in 2 paragraphs":
+               return f"Summarize the following document in 2 paragraphs:\n\n{document}\n\nQuestion: {question}"
+              elif summary_option == "Summarize in 5 bullet points":
+               return f"Summarize the following document in 5 bullet points:\n\n{document}\n\nQuestion: {question}"
             
             if uploaded_file and question:
                 document = uploaded_file.read().decode()
+                prompt = format_summary_prompt(document, question, summary_option)
+    
                 messages = [
                     {
                         "role": "user",
