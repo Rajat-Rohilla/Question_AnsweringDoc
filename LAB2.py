@@ -10,7 +10,7 @@ st.write(
 )
 
 # Ask user for their OpenAI API key via st.text_input.
-openai_api_key = st.secrets["API_Key"]
+openai_api_key = st.secrets["API_KEY"]
 
 if openai_api_key:
     try:
