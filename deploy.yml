@@ -30,4 +30,4 @@ jobs:
         run: |
           streamlit run your_streamlit_app.py
         env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}  # Access the secret here
+          OPENAI_API_KEY: ${{ secrets.API_KEY }}  # Access the secret here
