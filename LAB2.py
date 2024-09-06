@@ -1,5 +1,6 @@
 # Chatgpt 4.0 mini powered document Answesering 
 import openai
+import os
 from openai import OpenAI
 import streamlit as st
 # Show title and description.
@@ -10,7 +11,8 @@ st.write(
 )
 
 # Ask user for their OpenAI API key via st.text_input.
-openai_api_key = st.secrets["API_KEY"]
+openai_api_key = os.getenv("API_KEY")
+openai.api_key = openai_api_key
 
 if openai_api_key:
     try:
